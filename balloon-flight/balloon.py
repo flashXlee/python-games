@@ -5,16 +5,12 @@ WIDTH = 800
 HEIGHT = 600
 
 balloon = Actor("balloon")
-balloon.pos = 400, 300
 
 tree = Actor("tree")
-tree.pos = randint(800, 1600), 450
 
 house = Actor("house")
-house.pos = randint(800, 1600),460
 
 bird = Actor("bird-up")
-bird.pos = randint(800, 1600), randint(10,200)
 
 bird_up = True
 up = False
@@ -22,6 +18,8 @@ game_over = False
 score = 0
 number_of_updates = 0
 scores = []
+
+new_game_box =  Rect(350,400 , 100, 100)
 
 def draw():
     screen.blit("background",(0, 0))
@@ -33,11 +31,14 @@ def draw():
         screen.draw.text("Score: " + str(score), (700,5), color="black")
     else:
         dispaly_high_scores()
+        display_new_game_button()
 
-def on_mouse_down():
+def on_mouse_down(pos):
     global up
     up = True
     balloon.y -= 50
+    if game_over and new_game_box.collidepoint(pos):
+        init()
 
 def on_mouse_up():
     global up
@@ -128,3 +129,18 @@ def dispaly_high_scores():
         screen.draw.text(str(position)+ ") " + high_score, (350, y), color="black")
         y += 25
         position += 1
+
+def display_new_game_button():
+    screen.draw.filled_rect(new_game_box, "cyan")
+    screen.draw.textbox("NEW GAME", new_game_box, color="black")
+
+def init():
+    global score, game_over
+    balloon.pos = balloon.pos = 400, 300
+    tree.pos = randint(800, 1600), 450
+    house.pos = randint(800, 1600),460
+    bird.pos = randint(800, 1600), randint(10,200)
+    score = 0
+    game_over = False
+
+init()
