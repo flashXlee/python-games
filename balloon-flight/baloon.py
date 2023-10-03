@@ -103,7 +103,7 @@ def move_tree():
 def update_high_scores():
     global scores
     local_score = score
-    filename = r"/Users/sami/code/python-games/balloon-flight/top_legendery_scores.txt"
+    filename = os.path.abspath("balloon-flight/top_legendery_scores.txt")
     scores=[]
     with open(filename, "r") as file:
         line = file.readline()
