@@ -7,7 +7,7 @@ HEIGHT = 600
 CENTRE_X = WIDTH / 2
 CENTRE_Y = HEIGHT / 2
 
-move_list = []
+move_list = [1,2,3,4]
 display_list = []
 
 score = 0
@@ -31,8 +31,6 @@ down = Actor("down")
 down.pos = CENTRE_X, CENTRE_Y + 230
 left = Actor("left")
 left.pos = CENTRE_X - 60, CENTRE_Y + 170
-
-music.play("vanishing-horizon")
 
 def draw():
     global game_over, score, say_dance
@@ -87,10 +85,10 @@ def update_dancer(move):
 
 def display_moves():
     global move_list, display_list, dance_length
-    global say_dance, show_countdown, current_move
+    global say_dance, show_countdown
     if display_list:
-        current_move = display_list.pop(0)
-        update_dancer(current_move)
+        d = display_list.pop(0)
+        update_dancer(d)
         clock.schedule(display_moves, 1)
     else:
         say_dance = True
@@ -125,18 +123,20 @@ def next_move():
         moves_complete = True
 
 def on_key_up(key):
+    if not say_dance or game_over:
+        return
     if key == keys.UP:
         update_dancer(0)
-        check_game_satus(0)
+        check_game_status(0)
     elif key == keys.RIGHT:
         update_dancer(1)
-        check_game_satus(1)
+        check_game_status(1)
     elif key == keys.DOWN:
         update_dancer(2)
-        check_game_satus(2)
+        check_game_status(2)
     elif key == keys.LEFT:
         update_dancer(3)
-        check_game_satus(3)
+        check_game_status(3)
 
 def update():
     global current_move, moves_complete
@@ -146,17 +146,14 @@ def update():
             current_move = 0
             moves_complete = False
 
-def check_game_satus(move):
+def check_game_status(move):
     global game_over, score
-    print("Current Move: " + str(current_move))
-    print("Move is " +  str(move))
-    print(move_list[current_move])
-    print( move_list)
     if move_list[current_move] == move:
         score += 1
         next_move()
     else:
         game_over = True
 
+music.play("vanishing-horizon")
 
 generate_moves()
